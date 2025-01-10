@@ -25,6 +25,6 @@ services:
     build:
       context: ./frontend
     ports:
-      - "3000:80" #I have to map this to solve a faulty config as quickly as possible. 
+      - "3000:3000"
     depends_on:
       - backend

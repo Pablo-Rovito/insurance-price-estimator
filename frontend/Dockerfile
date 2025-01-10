@@ -22,7 +22,7 @@ FROM nginx:alpine
 COPY --from=build /app/build /usr/share/nginx/html
 
 # Exponer el puerto donde Nginx servirá el frontend
-EXPOSE 80
+EXPOSE 3000
 
 # Ejecutar Nginx
 CMD ["nginx", "-g", "daemon off;"]
