@@ -1,47 +1,30 @@
 version: '3.8'
-
 services:
-  # Servicio para el frontend
-  frontend:
+  database:
     build:
-      context: ./frontend
-    ports:
-      - "3000:80"
-    depends_on:
-      - backend
+      context: ./database
     environment:
-      - CHOKIDAR_USEPOLLING=true  # Necesario para la detección de cambios en algunos entornos como Docker
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
 
-  # Servicio para el backend
   backend:
     build:
       context: ./backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/insurance
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
     ports:
       - "8080:8080"
     depends_on:
       - database
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/insurance
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=postgres
-    networks:
-      - app-network
 
-  # Servicio para la base de datos PostgreSQL
-  database:
+  frontend:
     build:
-      context: ./database
-    image: postgres:13
+      context: ./frontend
     ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: insurance
-    networks:
-      - app-network
-
-# Red común para que los servicios se puedan comunicar entre sí
-networks:
-  app-network:
-    driver: bridge
+      - "3000:80" #I have to map this to solve a faulty config as quickly as possible. 
+    depends_on:
+      - backend

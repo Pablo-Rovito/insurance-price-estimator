@@ -1,6 +1,9 @@
 # Usamos una imagen base de OpenJDK 17
 FROM openjdk:17-jdk-slim as build
 
+# Instalar Maven
+RUN apt-get update && apt-get install -y maven
+
 # Establecer el directorio de trabajo
 WORKDIR /app
 
@@ -14,8 +17,8 @@ COPY src /app/src
 # Construir el JAR de la aplicación
 RUN mvn package -DskipTests
 
-# Usamos una imagen base más pequeña solo para ejecutar el JAR
-FROM openjdk:17-jre-slim
+# Usamos la misma imagen base para la fase de ejecución
+FROM openjdk:17-jdk-slim
 
 # Copiar el archivo JAR del build
 COPY --from=build /app/target/backend-*.jar /app/backend.jar
