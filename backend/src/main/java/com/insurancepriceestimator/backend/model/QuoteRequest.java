@@ -1,6 +1,6 @@
-package com.insurancePriceEstimator.backend.model;
+package com.insurancepriceestimator.backend.model;
 
-import com.insurancePriceEstimator.backend.enums.CoverageEnum;
+import com.insurancepriceestimator.backend.enums.CoverageEnum;
 
 public class QuoteRequest {
     private Integer age;

@@ -1,4 +1,4 @@
-package com.insurancePriceEstimator.backend;
+package com.insurancepriceestimator.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

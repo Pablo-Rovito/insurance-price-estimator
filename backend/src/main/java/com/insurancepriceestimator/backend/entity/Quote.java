@@ -1,4 +1,4 @@
-package com.insurancePriceEstimator.backend.entity;
+package com.insurancepriceestimator.backend.entity;
 
 import jakarta.persistence.*;
 

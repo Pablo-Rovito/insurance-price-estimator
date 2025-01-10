@@ -1,4 +1,4 @@
-package com.insurancePriceEstimator.backend;
+package com.insurancepriceestimator.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

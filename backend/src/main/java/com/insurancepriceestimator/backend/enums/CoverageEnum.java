@@ -1,4 +1,4 @@
-package com.insurancePriceEstimator.backend.enums;
+package com.insurancepriceestimator.backend.enums;
 
 public enum CoverageEnum {
     SUPER_COVERAGE(1000000D, "SUPER_COVERAGE"),
@@ -18,6 +18,6 @@ public enum CoverageEnum {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 }

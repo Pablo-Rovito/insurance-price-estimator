@@ -1,9 +1,8 @@
 CREATE DATABASE insurance;
-\c insurance;
 
 CREATE TABLE quotes (
     id SERIAL PRIMARY KEY,
-    client_name VARCHAR(100) NOT NULL,
-    coverage_amount NUMERIC NOT NULL,
-    monthly_rate NUMERIC NOT NULL
+    policy_holder VARCHAR(255) NOT NULL,
+    premium NUMERIC(10, 2) NOT NULL,
+    coverage_type VARCHAR(255) NOT NULL
 );
