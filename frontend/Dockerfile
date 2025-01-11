@@ -1,6 +1,28 @@
-FROM node:16
+# Etapa de construcción
+FROM node:18 AS build
+
 WORKDIR /app
-COPY package*.json ./
+
+# Copiar los archivos package.json y package-lock.json
+COPY package.json package-lock.json ./
+
+# Instalar las dependencias
 RUN npm install
+
+# Copiar todo el código fuente
 COPY . .
-CMD ["npm", "start"]
+
+# Construir la aplicación
+RUN npm run build
+
+# Etapa de producción
+FROM nginx:alpine
+
+# Copiar los archivos construidos al contenedor de Nginx
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Exponer el puerto donde Nginx servirá el frontend
+EXPOSE 3000
+
+# Ejecutar Nginx
+CMD ["nginx", "-g", "daemon off;"]
