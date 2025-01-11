@@ -9,14 +9,13 @@ public class Discount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "quote_id")
-    private Quote quote;
+    @Column(name = "quote_id", nullable = false)
+    private Long quoteId;
 
-    @Column(nullable = false)
+    @Column(name = "discount_percentage", nullable = false)
     private double discountPercentage;
 
-    @Column(nullable = false)
+    @Column(name = "end_price", nullable = false)
     private double endPrice;
 
     public Long getId() {
@@ -28,12 +27,12 @@ public class Discount {
         return this;
     }
 
-    public Quote getQuote() {
-        return quote;
+    public Long getQuoteId() {
+        return quoteId;
     }
 
-    public Discount setQuote(Quote quote) {
-        this.quote = quote;
+    public Discount setQuoteId(Long quoteId) {
+        this.quoteId = quoteId;
         return this;
     }
 

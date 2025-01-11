@@ -1,28 +1,17 @@
-package com.insurancepriceestimator.backend.entity;
+package com.insurancepriceestimator.backend.model;
 
-import jakarta.persistence.*;
-
-@Entity
-@Table(name = "quotes")
-public class Quote {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class QuoteResponse {
     private Long id;
-
-    @Column(nullable = false)
     private String policyHolder;
-
-    @Column(nullable = false)
     private Double premium;
-
-    @Column(nullable = false)
     private String coverageType;
+    private DiscountResponse discount;
 
     public Long getId() {
         return id;
     }
 
-    public Quote setId(Long id) {
+    public QuoteResponse setId(Long id) {
         this.id = id;
         return this;
     }
@@ -31,7 +20,7 @@ public class Quote {
         return policyHolder;
     }
 
-    public Quote setPolicyHolder(String policyHolder) {
+    public QuoteResponse setPolicyHolder(String policyHolder) {
         this.policyHolder = policyHolder;
         return this;
     }
@@ -40,7 +29,7 @@ public class Quote {
         return premium;
     }
 
-    public Quote setPremium(Double premium) {
+    public QuoteResponse setPremium(Double premium) {
         this.premium = premium;
         return this;
     }
@@ -49,8 +38,17 @@ public class Quote {
         return coverageType;
     }
 
-    public Quote setCoverageType(String coverageType) {
+    public QuoteResponse setCoverageType(String coverageType) {
         this.coverageType = coverageType;
+        return this;
+    }
+
+    public DiscountResponse getDiscount() {
+        return discount;
+    }
+
+    public QuoteResponse setDiscount(DiscountResponse discount) {
+        this.discount = discount;
         return this;
     }
 }

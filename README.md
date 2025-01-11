@@ -36,7 +36,7 @@ This is a system that allows users to get a quick pricing on a life insurance.
         * Create Database with name 'insurance'
         * Connect to 'insurance', paste contents of init.sql in QueryTool tab, execute.
     * Backend: execute file /backend/src/main/java/com/insurancepriceestimator/backend/BackendApplication.java
-    * Frontend: run /frontend> npm start
+    * Frontend: run /frontend> npm start (don´t forget to install dependencies first with npm install :) )
 
 ## Layers
 ### Database

@@ -5,4 +5,10 @@ export interface QuoteResponse {
     policyHolder: string;
     premium: number;
     coverageType: CoverageEnum;
+    discount: Discount;
+}
+
+interface Discount {
+    discountPercentage: number;
+    endPrice: number;
 }

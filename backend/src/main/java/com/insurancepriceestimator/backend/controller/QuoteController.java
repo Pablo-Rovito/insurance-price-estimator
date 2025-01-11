@@ -1,8 +1,8 @@
 package com.insurancepriceestimator.backend.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.insurancepriceestimator.backend.entity.Quote;
 import com.insurancepriceestimator.backend.model.QuoteRequest;
+import com.insurancepriceestimator.backend.model.QuoteResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.insurancepriceestimator.backend.service.QuoteService;
@@ -16,8 +16,8 @@ public class QuoteController {
     QuoteService srv;
 
     @PostMapping
-    public ResponseEntity<Quote> createQuote(@RequestBody QuoteRequest request) throws JsonProcessingException {
-        Quote quote = srv.calculateQuote(request);
+    public ResponseEntity<QuoteResponse> createQuote(@RequestBody QuoteRequest request) throws JsonProcessingException {
+        QuoteResponse quote = srv.calculateQuote(request);
         if(quote.getId() == null) return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(quote);
     }
