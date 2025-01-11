@@ -2,8 +2,14 @@ import React, { useState } from "react";
 import { CoverageEnum } from "../enums/CoverageEnum.ts";
 import { QuoteResponse } from "../interfaces/QuoteResponse.ts";
 import { QuoteData } from "../interfaces/QuoteData.ts";
+import Table from "./Table.tsx";
 
 const QuoteForm: React.FC = () => {
+    const headers: string[] = ["Parameter", "Value"];
+    const rows: string[] = ["Policy Holder", "Premium", "Coverage Type", "Discount Percentage", "End Price"];
+    const historyBackground: string = "#f0f0f0";
+    const historyWidth: string = "100%";
+
     const [name, setName] = useState<string>("");
     const [age, setAge] = useState<number>("");
     const [coverage, setCoverage] = useState<CoverageEnum>(CoverageEnum.SUPER_COVERAGE);
@@ -15,6 +21,16 @@ const QuoteForm: React.FC = () => {
         setName("");
         setCoverage(CoverageEnum.SUPER_COVERAGE);
     };
+
+    const listResponseData = (quote: QuoteResponse) => {
+        return [
+            quote.policyHolder,
+            quote.premium.toString(),
+            quote.coverageType,
+            quote.discount.discountPercentage.toString(),
+            quote.discount.endPrice.toString()
+        ]
+    }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -41,7 +57,8 @@ const QuoteForm: React.FC = () => {
 
             const data: QuoteResponse = await response.json();
             setResponse(data);
-            setHistory([...history, data]);
+
+            setHistory((prevHistory) => [...prevHistory, data]);
             resetForm();
             alert("Success getting the quote!");
         } catch (error) {
@@ -68,21 +85,15 @@ const QuoteForm: React.FC = () => {
             {response && (
                 <div>
                     <h3>Quote</h3>
-                    <pre>{JSON.stringify(response, null, 2)}</pre>
+                    <Table headers={headers} rows={rows} data={listResponseData(response)}/>
                 </div>
             )}
 
-            {history.length && (
-                <div>
+            {history.length > 0 && (
+                <div style={{backgroundColor: historyBackground, width: historyWidth}}>
                     <h3>History</h3>
-                    <ul>
-                        {history.map((quote: QuoteResponse) => (
-                            <li key={quote.id}>
-                                <pre>{JSON.stringify(response, null, 2)}</pre>
-                            </li>
-                        ))}
-                    </ul>
-                </div>    
+                    {history.map((quote: QuoteResponse) => <Table key={quote.id} headers={headers} rows={rows} data={listResponseData(quote)}/>)}
+                </div>
             )}
         </div>
     );

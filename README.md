@@ -23,6 +23,21 @@ This is a system that allows users to get a quick pricing on a life insurance.
     * backend: http://localhost:8080
     * database: http://localhost:5432
 
+## How to modify the app
+1) Modify whatever
+2) If app is deployed with Docker, open console in root, 'docker-compose down', then rebuild with 'docker-compose up --build'
+3) For deploying individually outside Docker:
+    * Database: Open PGAdmin4 (it´s the easiest way for me)
+        * New connection with parameters
+            - Host: localhost
+            - Port: 5432
+            - Username: check out backend access params in resources package
+            - Password: same as above
+        * Create Database with name 'insurance'
+        * Connect to 'insurance', paste contents of init.sql in QueryTool tab, execute.
+    * Backend: execute file /backend/src/main/java/com/insurancepriceestimator/backend/BackendApplication.java
+    * Frontend: run /frontend> npm start (don´t forget to install dependencies first with npm install :) )
+
 ## Layers
 ### Database
 * Table 'quotes'
@@ -41,6 +56,9 @@ This is a system that allows users to get a quick pricing on a life insurance.
 ### Business logic
 * Price = Coverage * Age * Risk factor
     * Risk factor depends on the age, ranging from 0.10 to 0.99 as the age increases
+* Discount
+    * if age <= 25 -> 25%
+    * if name contains 'discount' -> 10%
 
 ### Frontend
 * QuoteForm: form for inputting user data and showing result.

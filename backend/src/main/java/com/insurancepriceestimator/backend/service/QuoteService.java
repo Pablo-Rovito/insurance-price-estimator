@@ -1,23 +1,26 @@
 package com.insurancepriceestimator.backend.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.insurancepriceestimator.backend.entity.Discount;
 import com.insurancepriceestimator.backend.entity.Quote;
 import com.insurancepriceestimator.backend.model.QuoteRequest;
+import com.insurancepriceestimator.backend.model.QuoteResponse;
+import com.insurancepriceestimator.backend.repository.DiscountRepository;
 import com.insurancepriceestimator.backend.repository.QuoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
-import static com.insurancepriceestimator.backend.utils.Utils.calculateRiskFactor;
-import static com.insurancepriceestimator.backend.utils.Utils.printInfo;
+import static com.insurancepriceestimator.backend.utils.Utils.*;
 
 @Service
 public class QuoteService {
 
     @Autowired
-    QuoteRepository repository;
+    QuoteRepository quoteRepository;
+    @Autowired
+    DiscountRepository discountRepository;
 
-    public Quote calculateQuote(QuoteRequest request) throws JsonProcessingException {
+    public QuoteResponse calculateQuote(QuoteRequest request) throws JsonProcessingException {
         printInfo("[QuoteService - calculateQuote] INIT with request: ", request);
 
         double amount;
@@ -35,12 +38,17 @@ public class QuoteService {
                     .setCoverageType(request.getCoverage().getName());
             printInfo("[QuoteService - calculateQuote] quote: ", quote);
 
-            repository.save(quote);
+            Quote insertedQuote = quoteRepository.save(quote);
+            printInfo("[QuoteService - calculateQuote] insertedQuote: ", insertedQuote);
+
+            Discount insertedDiscount = discountRepository.save(calculateDiscount(request, insertedQuote));
+            printInfo("[QuinoteService - calculateQuote] insertedDiscount: ", insertedDiscount);
+
+            return mapQuote(insertedQuote, insertedDiscount);
+
         } catch (Exception e) {
             printInfo("[QuoteService - calculateQuote] ERROR message: ", e.getMessage());
-            return new Quote();
+            return new QuoteResponse();
         }
-
-        return quote;
     }
 }
