@@ -13,17 +13,26 @@ This is a system that allows users to get a quick pricing on a life insurance.
 * Frontend: React with Typescript
 * Database: PostgreSQL
 * Containarization: Docker
-* Orchestration: Kubernetes
 
 ## Layers
+### Database
+* Table 'quotes'
+* Columns
+    * id
+    * policyHolder (corresponds to name)
+    * premium (corresponds to yearly amount of insurance)
+    * coverageType (corresponds to coverage)
+
 ### Backend
 * POST /quotes: returns price based on inputted user data (name, age, coverage)
-* GET /quotes/{id}: gets previously stored price
+    * name: name of the inquirer
+    * age: age of the inquirer
+    * coverage: MINIMUM_COVERAGE, REGULAR_COVERAGE, SUPER_COVERAGE
 
 ### Business logic
 * Price = Coverage * Age * Risk factor
+    * Risk factor depends on the age, ranging from 0.10 to 0.99 as the age increases
 
 ### Frontend
-* QuoteForm: form for inputting user data
-* QuoteResult: shows price
+* QuoteForm: form for inputting user data and showing result.
 * Workflow: user fills form -> data is sent to backend -> price is retrieved from backend and shown on screen
