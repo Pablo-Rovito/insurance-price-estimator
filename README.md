@@ -44,4 +44,7 @@ This is a system that allows users to get a quick pricing on a life insurance.
 
 ### Frontend
 * QuoteForm: form for inputting user data and showing result.
+    * Form: it receives age, name and type of policy, this last one from an select because there are limited policy types
+    * Result: it shows a stringified representation of the body of the API response
+    * History: it shows the quotes obtained in the current session (so no persistency) and it is handled with a local state
 * Workflow: user fills form -> data is sent to backend -> price is retrieved from backend and shown on screen

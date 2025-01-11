@@ -8,6 +8,7 @@ const QuoteForm: React.FC = () => {
     const [age, setAge] = useState<number>("");
     const [coverage, setCoverage] = useState<CoverageEnum>(CoverageEnum.SUPER_COVERAGE);
     const [response, setResponse] = useState<QuoteResponse | null>(null);
+    const [history, setHistory] = useState<QuoteResponse[]>([]);
 
     const resetForm = () => {
         setAge("");
@@ -40,6 +41,7 @@ const QuoteForm: React.FC = () => {
 
             const data: QuoteResponse = await response.json();
             setResponse(data);
+            setHistory([...history, data]);
             resetForm();
             alert("Success getting the quote!");
         } catch (error) {
@@ -65,9 +67,22 @@ const QuoteForm: React.FC = () => {
 
             {response && (
                 <div>
-                <h3>Quote</h3>
-                <pre>{JSON.stringify(response, null, 2)}</pre>
+                    <h3>Quote</h3>
+                    <pre>{JSON.stringify(response, null, 2)}</pre>
                 </div>
+            )}
+
+            {history.length && (
+                <div>
+                    <h3>History</h3>
+                    <ul>
+                        {history.map((quote: QuoteResponse) => (
+                            <li key={quote.id}>
+                                <pre>{JSON.stringify(response, null, 2)}</pre>
+                            </li>
+                        ))}
+                    </ul>
+                </div>    
             )}
         </div>
     );
