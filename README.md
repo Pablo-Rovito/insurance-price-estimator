@@ -14,6 +14,15 @@ This is a system that allows users to get a quick pricing on a life insurance.
 * Database: PostgreSQL
 * Containarization: Docker
 
+## How to deploy it on local environment
+1) Clone somewhere
+2) Open Docker Desktop (or make Docker engine available by whatever means are preferred)
+3) In root folder, execute docker-compose up --build
+4) Everything should work out fine... routed ports are as follows:
+    * frontend: http://localhost:3000
+    * backend: http://localhost:8080
+    * database: http://localhost:5432
+
 ## Layers
 ### Database
 * Table 'quotes'
