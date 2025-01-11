@@ -12,7 +12,7 @@ This is a system that allows users to get a quick pricing on a life insurance.
 * Backend: Springboot with Java
 * Frontend: React with Typescript
 * Database: PostgreSQL
-* Containarization: Docker
+* Containerization: Docker
 
 ## How to deploy it on local environment
 1) Clone somewhere
