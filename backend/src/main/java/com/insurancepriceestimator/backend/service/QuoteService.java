@@ -3,6 +3,8 @@ package com.insurancepriceestimator.backend.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.insurancepriceestimator.backend.entity.Discount;
 import com.insurancepriceestimator.backend.entity.Quote;
+import com.insurancepriceestimator.backend.factories.policy.Policy;
+import com.insurancepriceestimator.backend.factories.policy.PolicyFactory;
 import com.insurancepriceestimator.backend.model.QuoteRequest;
 import com.insurancepriceestimator.backend.model.QuoteResponse;
 import com.insurancepriceestimator.backend.repository.DiscountRepository;
@@ -23,6 +25,7 @@ public class QuoteService {
     public QuoteResponse calculateQuote(QuoteRequest request) throws JsonProcessingException {
         printInfo("[QuoteService - calculateQuote] INIT with request: ", request);
 
+        Policy policy = PolicyFactory.getPolicy(request.getCoverage());
         double amount;
         Quote quote = new Quote();
 
@@ -30,7 +33,7 @@ public class QuoteService {
             Double coverage = request.getCoverage().getAmount();
             printInfo("[QuoteService - calculateQuote] coverage: ", coverage);
 
-            amount = coverage * request.getAge() * calculateRiskFactor(request.getAge());
+            amount = policy.calculatePrice(request.getAge());
             printInfo("[QuoteService - calculateQuote] amount: ", amount);
 
             quote.setPolicyHolder(request.getName())
