@@ -7,9 +7,7 @@ import com.insurancepriceestimator.backend.repository.QuoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
-import static com.insurancepriceestimator.backend.utils.Utils.calculateRiskFactor;
-import static com.insurancepriceestimator.backend.utils.Utils.printInfo;
+import static com.insurancepriceestimator.backend.utils.Utils.*;
 
 @Service
 public class QuoteService {
@@ -32,7 +30,8 @@ public class QuoteService {
 
             quote.setPolicyHolder(request.getName())
                     .setPremium(amount)
-                    .setCoverageType(request.getCoverage().getName());
+                    .setCoverageType(request.getCoverage().getName())
+                    .setDiscount(calculateDiscount(request, quote));
             printInfo("[QuoteService - calculateQuote] quote: ", quote);
 
             repository.save(quote);

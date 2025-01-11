@@ -18,6 +18,9 @@ public class Quote {
     @Column(nullable = false)
     private String coverageType;
 
+    @OneToOne(mappedBy = "quote", cascade = CascadeType.ALL)
+    private Discount discount;
+
     public Long getId() {
         return id;
     }
@@ -51,6 +54,15 @@ public class Quote {
 
     public Quote setCoverageType(String coverageType) {
         this.coverageType = coverageType;
+        return this;
+    }
+
+    public Discount getDiscount() {
+        return discount;
+    }
+
+    public Quote setDiscount(Discount discount) {
+        this.discount = discount;
         return this;
     }
 }
