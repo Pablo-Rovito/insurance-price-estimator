@@ -20,6 +20,7 @@ FROM nginx:alpine
 
 # Copiar los archivos construidos al contenedor de Nginx
 COPY --from=build /app/build /usr/share/nginx/html
+COPY ./default.conf /etc/nginx/conf.d/default.conf
 
 # Exponer el puerto donde Nginx servirá el frontend
 EXPOSE 3000
