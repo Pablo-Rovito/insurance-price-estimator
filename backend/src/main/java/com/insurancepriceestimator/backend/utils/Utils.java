@@ -9,6 +9,8 @@ import com.insurancepriceestimator.backend.model.QuoteRequest;
 import com.insurancepriceestimator.backend.model.QuoteResponse;
 
 public class Utils {
+    private Utils() {}
+
     public static Double calculateRiskFactor(Integer age) {
         if(age < 18) return 0.1D;
         if(age <= 50) return 0.5D;
