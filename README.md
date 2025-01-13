@@ -1,5 +1,5 @@
 # insurance-price-estimator
-Simple estimator to use docker for the first time. Integrates Springboot backend, React frontend and PostgreSQL DB
+Simple estimator to use docker for the first time. Integrates Springboot backend, Kafka streams, React frontend and PostgreSQL DB.
 
 This is a system that allows users to get a quick pricing on a life insurance. 
 
@@ -7,11 +7,13 @@ This is a system that allows users to get a quick pricing on a life insurance.
 * Create an API for managing insurance pricing
 * Implement a simple Frontend for consuming the API
 * Include some business logic 
+* Produce and consume messages with Kafka
 
 ## Stack
 * Backend: Springboot with Java
 * Frontend: React with Typescript
 * Database: PostgreSQL
+* Event Streaming: Kafka
 * Containerization: Docker
 
 ## How to deploy it on local environment
@@ -43,15 +45,26 @@ This is a system that allows users to get a quick pricing on a life insurance.
 * Table 'quotes'
 * Columns
     * id
-    * policyHolder (corresponds to name)
+    * policy_holder (corresponds to name)
     * premium (corresponds to yearly amount of insurance)
-    * coverageType (corresponds to coverage)
+    * coverage_type (corresponds to coverage)
+
+* Table 'discounts'
+* Columns
+    * id
+    * quote_id (FK -> quotes.id)
+    * discount_percentage
+    * end_price
 
 ### Backend
 * POST /quotes: returns price based on inputted user data (name, age, coverage)
     * name: name of the inquirer
     * age: age of the inquirer
     * coverage: MINIMUM_COVERAGE, REGULAR_COVERAGE, SUPER_COVERAGE
+
+### Event Stream
+1) Each time a Quote is created, the QuoteService emits an event containing its basic data.
+2) A KafkaConsumerService listens and writes the message to the console. Naturally, it could also be made to invoke an asynchronous process that does a lot of validations, calculations, further data processing and other interesting stuff. For now, it writes to the console.
 
 ### Business logic
 * Price = Coverage * Age * Risk factor
@@ -65,4 +78,4 @@ This is a system that allows users to get a quick pricing on a life insurance.
     * Form: it receives age, name and type of policy, this last one from an select because there are limited policy types
     * Result: it shows a stringified representation of the body of the API response
     * History: it shows the quotes obtained in the current session (so no persistency) and it is handled with a local state
-* Workflow: user fills form -> data is sent to backend -> price is retrieved from backend and shown on screen
+* Workflow: user fills form -> data is sent to backend -> event is printed on backend console -> price is retrieved from backend and shown on screen

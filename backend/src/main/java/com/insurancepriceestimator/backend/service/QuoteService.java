@@ -10,7 +10,9 @@ import com.insurancepriceestimator.backend.model.QuoteResponse;
 import com.insurancepriceestimator.backend.repository.DiscountRepository;
 import com.insurancepriceestimator.backend.repository.QuoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+
 
 import static com.insurancepriceestimator.backend.utils.Utils.*;
 
@@ -21,6 +23,12 @@ public class QuoteService {
     QuoteRepository quoteRepository;
     @Autowired
     DiscountRepository discountRepository;
+
+    private final KafkaTemplate<String, String> kafkaTemplate;
+
+    public QuoteService(KafkaTemplate<String, String> kafkaTemplate) {
+        this.kafkaTemplate = kafkaTemplate;
+    }
 
     public QuoteResponse calculateQuote(QuoteRequest request) throws JsonProcessingException {
         printInfo("[QuoteService - calculateQuote] INIT with request: ", request);
@@ -45,7 +53,17 @@ public class QuoteService {
             printInfo("[QuoteService - calculateQuote] insertedQuote: ", insertedQuote);
 
             Discount insertedDiscount = discountRepository.save(calculateDiscount(request, insertedQuote));
-            printInfo("[QuinoteService - calculateQuote] insertedDiscount: ", insertedDiscount);
+            printInfo("[QuoteService - calculateQuote] insertedDiscount: ", insertedDiscount);
+
+            String event = String.format(
+                    "New quote: Policy Holder=%s - Coverage Type=%s - Discount Percentage=%.2f - End Price=%.2f",
+                    insertedQuote.getPolicyHolder(),
+                    insertedQuote.getCoverageType(),
+                    insertedDiscount.getDiscountPercentage(),
+                    insertedDiscount.getEndPrice()
+            );
+
+            kafkaTemplate.send("insurance-quotes", event);
 
             return mapQuote(insertedQuote, insertedDiscount);
 
